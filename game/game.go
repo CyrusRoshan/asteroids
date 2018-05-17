@@ -1,15 +1,21 @@
 package game
 
 import (
+	"github.com/CyrusRoshan/asteroids/objects"
 	"github.com/CyrusRoshan/asteroids/screen"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"golang.org/x/image/colornames"
 )
 
+const (
+	NEARBY_SECTORS = 1
+)
+
 type Game struct {
-	window *pixelgl.Window
-	canvas *pixelgl.Canvas
+	window  *pixelgl.Window
+	canvas  *pixelgl.Canvas
+	sectors objects.SectorHolder
 }
 
 func NewGame(win *pixelgl.Window) *Game {
