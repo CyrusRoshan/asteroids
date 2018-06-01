@@ -27,6 +27,13 @@ func NewGame(win *pixelgl.Window) *Game {
 	return &g
 }
 
+func setupDemo(g *Game) {
+	g.sectors = objects.NewSectorHolder(1, 1, 500, 500)
+	demoSector := g.sectors.GetSector(0, 0)
+
+	demoSector.Objects
+}
+
 func (g *Game) Run() {
 	for !g.window.Closed() {
 		screen.LimitFPS(30, func() {
