@@ -1,5 +1,9 @@
 package objects
 
+import (
+	"github.com/faiface/pixel"
+)
+
 type SectorHolder struct {
 	sectors      [][]Sector
 	sectorWidth  int
@@ -20,6 +24,13 @@ func NewSectorHolder(rows int, columns int, sectorWidth int, sectorHeight int) S
 		sectorHeight: sectorHeight,
 		rows:         rows,
 		columns:      columns,
+	}
+}
+
+func (s SectorHolder) GetCenterOfSector(row int, column int) pixel.Vec {
+	return pixel.Vec{
+		X: float64((s.sectorWidth * row) + s.sectorWidth/2),
+		Y: float64((s.sectorHeight * column) + s.sectorHeight/2),
 	}
 }
 

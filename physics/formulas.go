@@ -15,13 +15,13 @@ func acceleration(dt float64, dv float64) float64 {
 	return dv / dt
 }
 
-func gravity(m1 int, m2 int, r int) float64 {
-	return G * float64(m1*m2) / math.Pow(float64(r), 2)
+func gravity(m1 float64, m2 float64, r float64) float64 {
+	return G * m1 * m2 / math.Pow(r, 2)
 }
 
 // welll.. I never said this was accurate, or a physics sim..
-func frictionalForce(m int, g float64) float64 {
-	n := float64(m) * g
+func frictionalForce(m float64, g float64) float64 {
+	n := m * g
 	return AssumedFrictionCoefficient * n
 }
 

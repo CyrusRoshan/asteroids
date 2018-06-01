@@ -16,6 +16,8 @@ type Game struct {
 	window  *pixelgl.Window
 	canvas  *pixelgl.Canvas
 	sectors objects.SectorHolder
+
+	screenArea pixel.Rect
 }
 
 func NewGame(win *pixelgl.Window) *Game {
@@ -24,14 +26,19 @@ func NewGame(win *pixelgl.Window) *Game {
 		canvas: screen.NewCanvas(screen.ScreenBounds()),
 	}
 
+	g.screenArea = g.canvas.Bounds()
+	g.setupDemo()
+
 	return &g
 }
 
-func setupDemo(g *Game) {
+func (g *Game) setupDemo() {
 	g.sectors = objects.NewSectorHolder(1, 1, 500, 500)
 	demoSector := g.sectors.GetSector(0, 0)
+	g.screenArea = g.screenArea.Moved(g.sectors.GetCenterOfSector(0, 0))
 
-	demoSector.Objects
+	planet := objects.NewObject(100, colornames.Red, objects.PLANET_ONE)
+	demoSector.Objects = append(demoSector.Objects, planet)
 }
 
 func (g *Game) Run() {
@@ -60,8 +67,16 @@ func (g *Game) Draw() {
 	g.window.Clear(colornames.Red)
 	g.canvas.Clear(colornames.Black)
 
-	// actual draw stuff here
+	drawSector := g.sectors.GetSector(0, 0)
+	moveVec := g.screenArea.Center().Sub(g.sectors.GetCenterOfSector(0, 0))
+	sectorMatrix := pixel.IM.Moved(moveVec)
 
-	// g.canvas.Draw(g.window, pixel.IM.Moved(g.canvas.Bounds().Center()))
-	g.canvas.Draw(g.window, pixel.IM)
+	for _, object := range drawSector.Objects {
+		matrix := object.Physics.GetMatrix().Chained(sectorMatrix)
+		object.Sprite.DrawColorMask(g.canvas, matrix, object.Color)
+
+	}
+
+	g.canvas.Draw(g.window, pixel.IM.Moved(g.canvas.Bounds().Center()))
+	// g.canvas.Draw(g.window, pixel.IM)
 }

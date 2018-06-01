@@ -27,8 +27,8 @@ func isTouching(p1 Physics, p2 Physics) Touch {
 	}
 
 	if !p1.isRect && !p2.isRect {
-		dx := float64(p1.x - p2.x)
-		dy := float64(p1.y - p2.y)
+		dx := p1.x - p2.x
+		dy := p1.y - p2.y
 
 		return isTouchingCircleCircle(p1, p2, dx, dy)
 	}
